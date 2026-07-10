@@ -43,11 +43,18 @@ if not api_key:
 client = Anthropic(api_key=api_key)
 ui_queue = queue.Queue()
 stop_flag = threading.Event()
-
+overlay_pos = {"x": 100, "y": 100}
 
 def capture_screen():
     with mss.mss() as sct:
-        shot = sct.grab(sct.monitors[0])
+        x, y = overlay_pos["x"], overlay_pos["y"]
+        monitor = sct.monitors[1]  # fallback: primary
+        for mon in sct.monitors[1:]:
+            if (mon["left"] <= x < mon["left"] + mon["width"]
+                    and mon["top"] <= y < mon["top"] + mon["height"]):
+                monitor = mon
+                break
+        shot = sct.grab(monitor)
         return Image.frombytes("RGB", shot.size, shot.bgra, "raw", "BGRX")
 
 
@@ -168,6 +175,8 @@ class Overlay:
         self.root.geometry(f"+{e.x_root - self._dx}+{e.y_root - self._dy}")
 
     def poll_queue(self):
+        overlay_pos["x"] = self.root.winfo_x() + 10
+        overlay_pos["y"] = self.root.winfo_y() + 10
         try:
             while True:
                 kind, payload = ui_queue.get_nowait()
@@ -193,3 +202,4 @@ class Overlay:
 if __name__ == "__main__":
     threading.Thread(target=watcher_loop, daemon=True).start()
     Overlay().run()
+
