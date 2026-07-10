@@ -15,20 +15,16 @@ Design decisions:
 - **Duplicate suppression is fuzzy, not exact.** The model describes the same error with slightly different wording each time, so exact-match dedup fails. Comparing the first 40 characters within a cooldown window stops notification spam.
 - **Structured output contract.** The prompt forces a strict `ERROR: ... | FIX: ...` or `NO_ERROR` reply format, so the response can be parsed reliably without any fragile text analysis.
 
-## Lessons learned the hard way
+## Demo
 
-**The tool detected itself.** Early on, a deprecation warning appeared in the tool's own terminal — the watcher screenshotted it, printed "Error detected...", which changed the screen, which triggered another check, which found the same text still on screen. An alert loop, in miniature — the same class of problem as alert storms in real monitoring platforms.
-
-Fixed two ways: the prompt now tells the model to ignore the watcher's own output lines, and the terminal runs minimised. It was a useful, concrete reminder of why production monitoring systems need self-exclusion rules and alert deduplication.
-
-**Multi-monitor capture is not the default.** `mss` treats `monitors[1]` as the primary display only; `monitors[0]` is the combined virtual screen across all monitors. The first version silently ignored my second monitor — errors there were invisible to the tool. The fix also meant re-tuning the change threshold (the same dialog is a smaller *percentage* of a bigger screen) and capping image width so terminal text stays readable for the vision model.
+[![Live Demo](https://img.shields.io/badge/LIVE-DEMO-brightgreen)](https://screen-error-watcher.streamlit.app/)
 
 ## Setup
 
 Windows 10/11, Python 3.9+.
 
 ```
-pip install mss pillow numpy anthropic win11toast
+pip install mss pillow numpy anthropic
 
 setx ANTHROPIC_API_KEY "your-api-key-here"
 ```
