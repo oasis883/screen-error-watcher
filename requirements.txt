@@ -3,3 +3,4 @@ pillow
 numpy
 anthropic
 win11toast
+streamlit
