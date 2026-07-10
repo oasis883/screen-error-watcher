@@ -2,20 +2,13 @@
 
 A lightweight Windows tool that watches your screen and sends you a toast notification — with an AI-suggested fix — the moment an error, crash dialog, or exception appears anywhere on any monitor.
 
-I built this as a personal IT support aid: when you're juggling terminals, RMM consoles and remote sessions across two monitors, it's easy to miss an error that flashed past on the screen you weren't looking at. This tool acts like a second pair of eyes.
+I built this as a personal IT support aid: when an error pops up mid-task, the usual routine is read it, copy it, search it, and dig through results. This tool skips all of that — the diagnosis and a suggested fix appear in the corner of the screen within seconds, before you've even reached for the browser. Fewer clicks, faster fixes.
 
 ## How it works
 
 ```
-Every 5 seconds:
-  capture all monitors (mss)
-        ↓
-  cheap change detection            ← downscaled grayscale diff (numpy),
-  (did >2.5% of the screen change?)   so no API cost when nothing happens
-        ↓ only if changed
-  screenshot → Claude vision API    ← "is there a visible error on screen?"
-        ↓ only if a real error found
-  Windows toast notification        ← short description + suggested fix
+![How it works](flow.png)
+
 ```
 
 Design decisions:
