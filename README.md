@@ -6,10 +6,8 @@ I built this as a personal IT support aid: when an error pops up mid-task, the u
 
 ## How it works
 
-```
 ![How it works](flow.png)
 
-```
 
 Design decisions:
 
