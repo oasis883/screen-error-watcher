@@ -8,6 +8,12 @@ The project demonstrates how modern AI can augment IT support by combining real-
 
 ---
 
+## Live Demo
+
+
+[![Live Demo](https://img.shields.io/badge/LIVE-DEMO-brightgreen)](https://screen-error-watcher.streamlit.app/)
+
+
 ## Features
 
 ### Automatic Error Detection

@@ -4,4 +4,4 @@ __pycache__/
 *.log
 build/
 dist/
-*.spec
+*.specdemo.mp4
